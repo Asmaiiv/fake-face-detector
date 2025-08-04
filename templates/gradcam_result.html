@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <title>Grad-CAM Explanation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-color: #f0f4ff;
+            --card-color: white;
+            --text-color: #1a237e;
+            --accent-color: #2382f7;
+            --header-bg: #e3e8ff;
+            --footer-bg: #d6defc;
+        }
+        [data-theme='dark'] {
+            --bg-color: #0d1117;
+            --card-color: #21262d;
+            --text-color: #cdd9e5;
+            --accent-color: #2382f7;
+            --header-bg: #161b22;
+            --footer-bg: #21262d;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0 40px 60px 40px;
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header {
+            background-color: var(--header-bg);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        header .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        header .nav-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #1a73e8;
+        }
+        .theme-toggle {
+            background-color: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background-color: #1a73e8;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            max-width: 600px;
+            margin: 0 auto 60px auto;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+        }
+        h1 {
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+        .image-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: #1a73e8;
+        }
+        .label {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--text-color);
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+        </div>
+        <button class="theme-toggle" id="themeToggleBtn">Theme</button>
+    </header>
+
+    <div class="card">
+        <h1>Grad-CAM Explanation</h1>
+        <div class="image-container">
+            <div>
+                <p class="label">Original Image:</p>
+                <img src="{{ image_url }}" alt="Original" />
+            </div>
+            <div>
+                <p class="label">Grad-CAM Heatmap:</p>
+                <img src="{{ gradcam_url }}" alt="GradCAM" />
+            </div>
+        </div>
+        <a href="{{ url_for('detect') }}" class="back-btn">⬅ Back</a>
+    </div>
+
+    <footer>
+        &copy; 2025 Fake or Real Detector. All rights reserved.
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const htmlElement = document.documentElement;
+
+        // Load saved theme or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.dataset.theme = savedTheme;
+        applyThemeColors(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.dataset.theme;
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.dataset.theme = newTheme;
+            localStorage.setItem('theme', newTheme);
+            applyThemeColors(newTheme);
+        });
+
+        function applyThemeColors(theme) {
+            if (theme === 'dark') {
+                document.body.style.backgroundColor = '#0d1117';
+                document.body.style.color = '#cdd9e5';
+                document.querySelector('header').style.backgroundColor = '#161b22';
+                document.querySelector('footer').style.backgroundColor = '#21262d';
+                document.querySelectorAll('header .nav-links a').forEach(el => el.style.color = '#2382f7');
+                document.querySelector('.back-btn').style.backgroundColor = '#2382f7';
+                document.querySelector('.back-btn').style.color = '#ffffff';
+                themeToggleBtn.style.backgroundColor = '#2382f7';
+                themeToggleBtn.style.color = '#fff';
+            } else {
+                document.body.style.backgroundColor = '#f0f4ff';
+                document.body.style.color = '#1a237e';
+                document.querySelector('header').style.backgroundColor = '#e3e8ff';
+                document.querySelector('footer').style.backgroundColor = '#d6defc';
+                document.querySelectorAll('header .nav-links a').forEach(el => el.style.color = '#2382f7');
+                document.querySelector('.back-btn').style.backgroundColor = '#2382f7';
+                document.querySelector('.back-btn').style.color = '#ffffff';
+                themeToggleBtn.style.backgroundColor = '#2382f7';
+                themeToggleBtn.style.color = '#fff';
+            }
+        }
+    </script>
+</body>
+</html>

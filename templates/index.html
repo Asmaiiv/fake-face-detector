@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fake or Real Detector</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #000000;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header {
+            background-color: #f0f0f0;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        header .nav-links a {
+            color: #2382f7;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #1a73e8;
+        }
+        .theme-toggle {
+            background-color: #2382f7;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background-color: #1a73e8;
+        }
+        main {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        main h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #1a73e8;
+        }
+        main p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            color: #444444;
+        }
+        .detection-section {
+            background-color: #e0e0e0;
+            padding: 40px 20px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .detection-section img {
+            max-width: 450px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border: 3px solid #1a73e8;
+        }
+        .detect-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .detect-btn:hover {
+            background-color: #155ab6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+    </header>
+
+    <main>
+        <h1>Fake or Real Face Detector</h1>
+        <p>Explore how artificial intelligence can generate or detect faces, and understand how to distinguish between real and fake images.</p>
+
+        <div class="detection-section">
+            <img src="static/what-is-FR.jpg" alt="Upload example" />
+            <br />
+            <a href="{{ url_for('detect') }}" class="detect-btn">Start Detection</a>
+        </div>
+    </main>
+
+    <script>
+        
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        function setTheme(theme) {
+            if (theme === "dark") {
+                html.dataset.theme = "dark";
+                applyDarkTheme();
+            } else {
+                html.dataset.theme = "light";
+                applyLightTheme();
+            }
+        }
+
+        function applyDarkTheme() {
+            document.body.style.backgroundColor = "#0d1117";
+            document.body.style.color = "#cdd9e5";
+            document.querySelector("header").style.backgroundColor = "#161b22";
+            document.querySelector(".detection-section").style.backgroundColor = "#21262d";
+            document.querySelectorAll(".nav-links a").forEach(el => el.style.color = "#58a6ff");
+            document.querySelector("main h1").style.color = "#58a6ff";
+            document.querySelector("main p").style.color = "#8b949e";
+            document.querySelector(".detection-section img").style.borderColor = "#2382f7";
+            document.querySelector(".detect-btn").style.backgroundColor = "#2382f7";
+            document.querySelector(".detect-btn").style.color = "#ffffff";
+            document.querySelector(".theme-toggle").style.backgroundColor = "#2382f7";
+        }
+
+        function applyLightTheme() {
+            document.body.style.backgroundColor = "#ffffff";
+            document.body.style.color = "#000000";
+            document.querySelector("header").style.backgroundColor = "#f0f0f0";
+            document.querySelector(".detection-section").style.backgroundColor = "#e0e0e0";
+            document.querySelectorAll(".nav-links a").forEach(el => el.style.color = "#2382f7");
+            document.querySelector("main h1").style.color = "#1a73e8";
+            document.querySelector("main p").style.color = "#444444";
+            document.querySelector(".detection-section img").style.borderColor = "#1a73e8";
+            document.querySelector(".detect-btn").style.backgroundColor = "#1a73e8";
+            document.querySelector(".detect-btn").style.color = "#ffffff";
+            document.querySelector(".theme-toggle").style.backgroundColor = "#1a73e8";
+        }
+
+        function toggleTheme() {
+            const currentTheme = html.dataset.theme;
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            setTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+    </script>
+</body>
+</html>
+

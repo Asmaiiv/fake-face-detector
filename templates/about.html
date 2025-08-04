@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <title>About - Fake or Real Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-color: #f0f4ff;
+            --text-color: #1a237e;
+            --accent-color: #2382f7;
+            --header-bg: #e3e8ff;
+            --footer-bg: #d6defc;
+        }
+        [data-theme='dark'] {
+            --bg-color: #0d1117;
+            --text-color: #cdd9e5;
+            --accent-color: #2382f7;
+            --header-bg: #161b22;
+            --footer-bg: #21262d;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0 40px 60px 40px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header {
+            background-color: var(--header-bg);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        header .nav-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #1a73e8;
+        }
+        .theme-toggle {
+            background-color: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background-color: #1a73e8;
+        }
+        main {
+            text-align: center;
+            padding: 60px 0;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 10px auto;
+            line-height: 1.5;
+        }
+        a.back-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        a.back-link:hover {
+            color: #1a73e8;
+        }
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--text-color);
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+        </div>
+        <button class="theme-toggle" id="themeToggleBtn">Theme</button>
+    </header>
+
+    <main>
+        <h1>About This Project</h1>
+        <p>This system detects whether a face image is real or fake using a pre-trained AI model: Central Difference Convolutional Network (CDCN).</p>
+        <p>Built with Python, TensorFlow, and Flask for deeb learning and web integration.</p>
+        <br />
+        <a href="/" class="back-link">← Back to Detection</a>
+    </main>
+
+    <footer>
+        &copy; 2025 Fake or Real Detector. All rights reserved.
+    </footer>
+
+    <script>
+        
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const htmlElement = document.documentElement;
+
+        
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.dataset.theme = savedTheme;
+        applyThemeColors(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.dataset.theme;
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.dataset.theme = newTheme;
+            localStorage.setItem('theme', newTheme);
+            applyThemeColors(newTheme);
+        });
+
+        function applyThemeColors(theme) {
+            if (theme === 'dark') {
+                document.body.style.backgroundColor = '#0d1117';
+                document.body.style.color = '#cdd9e5';
+                document.querySelector('header').style.backgroundColor = '#161b22';
+                document.querySelector('footer').style.backgroundColor = '#21262d';
+                document.querySelectorAll('header .nav-links a').forEach(el => el.style.color = '#2382f7');
+                document.querySelector('main a.back-link').style.color = '#2382f7';
+                themeToggleBtn.style.backgroundColor = '#2382f7';
+                themeToggleBtn.style.color = '#fff';
+            } else {
+                document.body.style.backgroundColor = '#f0f4ff';
+                document.body.style.color = '#1a237e';
+                document.querySelector('header').style.backgroundColor = '#e3e8ff';
+                document.querySelector('footer').style.backgroundColor = '#d6defc';
+                document.querySelectorAll('header .nav-links a').forEach(el => el.style.color = '#2382f7');
+                document.querySelector('main a.back-link').style.color = '#2382f7';
+                themeToggleBtn.style.backgroundColor = '#2382f7';
+                themeToggleBtn.style.color = '#fff';
+            }
+        }
+    </script>
+</body>
+</html>
